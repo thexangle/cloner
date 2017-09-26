@@ -1,0 +1,40 @@
+<md-toolbar color="primary">
+  <span>MyCompany</span>
+  <span class="example-spacer"></span>
+  <button md-button [mdMenuTriggerFor]="appMenu"><md-icon>menu</md-icon> Menu</button>
+</md-toolbar>
+  
+<md-menu #appMenu="mdMenu">
+  <button md-menu-item> Settings </button>
+  <button md-menu-item> Help </button>
+</md-menu>
+
+<div style="text-align:center">
+  <img width="300" src="assets/logo.png">
+</div>
+
+<app-upload-image></app-upload-image>
+
+<div class="row">
+  <h2 *ngIf="cards.length === 0">Insert a SD Card to start!</h2>
+  <div *ngIf="cards.length > 0">
+    <h2>Here are your sd cards: </h2>
+    <!-- <button *ngIf="allDone()" (click)="ejectAll()">Eject all</button> -->
+  </div>
+  <md-grid-list cols="2" rowHeight="2:1">
+      <md-grid-tile *ngFor = "let card of cards">
+          <h2>{{ card.name }}</h2>
+          <p>{{ card.status }}</p>
+          <p>{{ card.percentage }}%</p>
+          <section class="example-section">
+            <md-progress-bar
+              class="example-margin"
+              [color]="color"
+              [mode]="mode"
+              [value]="card.percentage">
+            </md-progress-bar>
+          </section>
+          <!-- <button (click)="eject(card.name)">Eject</button> -->
+      </md-grid-tile>
+  </md-grid-list>
+</div>
