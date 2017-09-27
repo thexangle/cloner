@@ -6,6 +6,7 @@ const cards = [];
 const processes = {};
 let root_device_name;
 let timeout = null;
+let enabled = false;
 
 function updateStatus(name, status, percentage) {
   if(status.replace(' ', '') !== '')
@@ -164,26 +165,30 @@ function checkForDisconnectedCards(connected_cards) {
 
 function startWatch() {
   timeout = setTimeout(() => {
-    stopWatch();
-    check(result => {
-      let connected_cards = {};
-      result = result.split('\n');
-      for(let r of result) {
-        r = r.split(' ');
-        // Check if new device connected
-        connected_cards[r[0]] = true;
-        if(r[0] !== '' &&
-            r[0] !== 'NAME' &&
-            r[0] !== root_device_name &&
-            r[0] !== 'sr0' &&
-            !cardInUse(r[0])) {
-              dd_the_card(r[0]);
+    if(enabled){
+      stopWatch();
+      check(result => {
+        let connected_cards = {};
+        result = result.split('\n');
+        for(let r of result) {
+          r = r.split(' ');
+          // Check if new device connected
+          connected_cards[r[0]] = true;
+          if(r[0] !== '' &&
+              r[0] !== 'NAME' &&
+              r[0] !== root_device_name &&
+              r[0] !== 'sr0' &&
+              !cardInUse(r[0])) {
+                dd_the_card(r[0]);
+          }
         }
-      }
-      checkForDisconnectedCards(connected_cards);
-      // Start watching again
+        checkForDisconnectedCards(connected_cards);
+        // Start watching again
+        startWatch();
+      });
+    } else {
       startWatch();
-    });
+    }
   }, 2000);
 }
 
@@ -191,18 +196,34 @@ function stopWatch(){
   clearTimeout(timeout);
 }
 
+function verifyImageExists() {
+  setTimeout(() => {
+    custom_fs.checkImageFilesExist(err => {
+      if(err) verifyImageExists();
+      else {
+        enabled = true;
+        global.io.emit('message', {
+          label: "image_info",
+          data: custom_fs.readImageInfoFile()
+        });
+      }
+    });
+  }, 2000);
+}
+
 global.io.on('connection', function (socket) {
   console.log('New connection from ' + socket.id);
   socket.emit('message', {
     label: "image_info",
     data: custom_fs.readImageInfoFile()
-  })
+  });
 });
 
 module.exports = {
     cards: cards,
     init: function(callback){
       // Start by checking which device is the root device
+      verifyImageExists();
       getRootDevice(err => {
         if(err) return callback(err);
 

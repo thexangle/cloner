@@ -14,6 +14,7 @@ export class AppComponent {
   messages = [];
   connection;
   cards = [];
+  image_info;
 
   constructor(private ioService: IoService) {}
 
@@ -53,6 +54,11 @@ export class AppComponent {
     });
   }
   
+  updateInfo(info) {
+    this.image_info = info;
+    console.log('receiving')
+  }
+
   ngOnDestroy() {
     this.connection.unsubscribe();
   }

@@ -19,7 +19,23 @@ function forceReadImageInfoFile() {
     return readImageInfoFile();
 }
 
+function checkImageFilesExist(callback) {
+    fs.readdir(global.root_path, (err, files) => {
+        if(err) return callback(err);
+
+        let image_found = false;
+        let image_info_found = false;
+        for(let f of files) {
+            if(f === 'image.img' && !image_found) image_found = true;
+            if(f === 'image.info.json' && !image_info_found) image_info_found = true;
+        }
+        if(image_found && image_info_found) return callback();
+        return callback('Image files not found!');
+    });
+}
+
 module.exports = {
     forceReadImageInfoFile: forceReadImageInfoFile,
-    readImageInfoFile: readImageInfoFile 
+    readImageInfoFile: readImageInfoFile,
+    checkImageFilesExist: checkImageFilesExist
 };

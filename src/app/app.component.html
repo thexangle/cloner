@@ -9,9 +9,9 @@
   <button md-menu-item> Help </button>
 </md-menu> -->
 
-<app-upload-image></app-upload-image>
+<app-upload-image (onGetInfo)="updateInfo($event)"></app-upload-image>
 
-<h2 *ngIf="cards.length === 0">Insert a SD Card to start!</h2>
+<h2 *ngIf="cards.length === 0 && image_info">Insert a SD Card to start!</h2>
 <div *ngIf="cards.length > 0">
   <h2>Here are your sd cards: </h2>
   <!-- <button *ngIf="allDone()" (click)="ejectAll()">Eject all</button> -->

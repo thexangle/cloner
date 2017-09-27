@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { UploadImageService } from '../upload-image.service';
 import { IoService } from '../io.service';
 
@@ -11,6 +11,8 @@ export class UploadImageComponent implements OnInit {
 
   @ViewChild('inputImage')
   inputImageVariable: any;
+
+  @Output() onGetInfo: EventEmitter<any> = new EventEmitter<any>();
 
   reader: FileReader = new FileReader();
   form_data: FormData = new FormData();
@@ -33,6 +35,8 @@ export class UploadImageComponent implements OnInit {
       switch(message['label']){
         case "image_info":
           this.image_info = message['data'];
+          console.log('emitting')
+          this.onGetInfo.emit(this.image_info);
           break;
         default:
           break;
