@@ -13,8 +13,10 @@ import {
   MdIconModule, 
   MdToolbarModule, 
   MdCardModule, 
-  MdMenuModule 
+  MdMenuModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
+import { FlexLayoutModule } from "@angular/flex-layout";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -32,7 +34,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MdMenuModule,
     MdCardModule,
     MdToolbarModule,
-    MdIconModule
+    MdIconModule,
+    MatProgressSpinnerModule,
+    FlexLayoutModule
   ],
   providers: [
     IoService,

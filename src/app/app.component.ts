@@ -46,7 +46,6 @@ export class AppComponent {
       switch(message['label']){
         case "cards":
           this.cards = message['cards'];
-
           break;
         default:
           break;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UploadImageService } from '../upload-image.service';
 import { IoService } from '../io.service';
 
@@ -8,6 +8,9 @@ import { IoService } from '../io.service';
   styleUrls: ['./upload-image.component.css']
 })
 export class UploadImageComponent implements OnInit {
+
+  @ViewChild('inputImage')
+  inputImageVariable: any;
 
   reader: FileReader = new FileReader();
   form_data: FormData = new FormData();
@@ -43,6 +46,9 @@ export class UploadImageComponent implements OnInit {
       .subscribe(result => {
         this.status = result.message;
         this.image_info = result.data;
+        this.progress = null;
+        this.file = null;
+        this.inputImageVariable.nativeElement.value = "";        
       });
   }
 

@@ -1,6 +1,6 @@
-<h2>Upload a new image!</h2>
-<h3 *ngIf="image_info">Latest image uploaded on {{ image_info.datetime }}</h3>
-<h3 *ngIf="!image_info">No known image on system or couldn't retrieve data.</h3>
+<!-- <h2>Upload a new image!</h2> -->
+<h3 class="text-display-4" *ngIf="image_info">Latest image uploaded on {{ image_info.datetime }}</h3>
+<h3 class="text-display-4" *ngIf="!image_info">No known image on system or couldn't retrieve data. You should upload a new image before trying to clone sd cards.</h3>
 <div *ngIf="progress">
     <h3>{{ progress }}%</h3>
     <md-progress-bar 
@@ -10,13 +10,15 @@
         [value]="progress">
     </md-progress-bar>
 </div>
-<span>{{ status }}</span>
+<div>
+    <span>{{ status }}</span>
+</div>
 <md-form-field>
     <label class="custom-file">
-    <input type="file" id="image" class="custom-file-input" (change)="onChange($event)" md-raised-button>
+    <input #inputImage type="file" id="image" class="custom-file-input" (change)="onChange($event)" md-raised-button>
     <span class="custom-file-control"></span>
     </label>
 </md-form-field>
-<md-form-field>
+<md-form-field *ngIf="file">
     <button (click)="upload()" md-raised-button color="primary">Upload</button>
 </md-form-field>

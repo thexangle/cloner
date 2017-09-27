@@ -6,15 +6,7 @@ const custom_fs = require('./custom-fs');
 
 module.exports = function(app){
     const DIR = './uploads/';
-    const storage = multer.diskStorage({
-        destination: function (req, file, cb) {
-            cb(null, DIR)
-        },
-        filename: function (req, file, cb) {
-            cb(null, file.fieldname + '-' + Date.now())
-        }
-    });
-    const upload = multer({ storage: storage })
+    const upload = multer({ dest: DIR })
     
     app.post('/api/image', upload.single('image'), function (req, res) {
         let files = fs.readdirSync(global.root_path, 'utf8');
